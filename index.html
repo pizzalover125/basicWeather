@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/e201bbd968.js" crossorigin="anonymous"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+	<style>
+	body {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background: lightskyblue;
+		font-size: 2rem;
+		font-family: sans-serif;
+		color: rgb(7, 9, 10);
+	}
+	.container {
+		height: 90vh;
+		width: 90vw;
+		background-color: lightsteelblue;
+		text-align: center;
+		padding-top: 12px;
+		border-radius: 16px;
+		border: 2px solid rgb(14, 43, 1);
+	}
+    #wicon {
+        width: 70px;
+        height: 70px;
+    }
+    div {
+        font-weight: 900;
+        padding: 4px;
+        font-size: 0.875em;
+    }
+	</style>
+</head>
+<body>
+	<div class="container">
+        <div class="title">Weather Data For You:</div>
+        <div class="temp">-°C</div>
+        <div class="fl">----</div>
+        <div class="max">-°C</div>
+        <div class="min">-°C</div>
+        <div class="humid">----</div>
+        <div class="location"></div>
+        <div class="summary">----</div>
+        <div id="icon"><img id="wicon" src=""></div>
+        <div class="sunrise"></div>
+        <div class="sunset"></div>
+	</div>
+
+	<script> 
+    let lon;
+    let lat;
+    let temperature = document.querySelector(".temp");
+    let fl = document.querySelector(".fl");
+    let summary = document.querySelector(".summary");
+    let loc = document.querySelector(".location");
+    
+    const kelvin = 273;
+    
+    window.addEventListener("load", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            lon = position.coords.longitude;
+            lat = position.coords.latitude;
+
+            const api = "6d055e39ee237af35ca066f35474e9df";
+            const base = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&` + `lon=${lon}&appid=6d055e39ee237af35ca066f35474e9df`;
+        
+            // Calling the API
+            fetch(base)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    var iconcode = data.weather[0].icon;
+                    var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png";
+                    let timezone = data.timezone;
+                    let humid = data.main.humidity;
+                    let sunrise = data.sys.sunrise;
+                    let sunset = data.sys.sunset;
+                    let sunrise_time = moment.utc(sunrise,'X').add(timezone,'seconds').format('hh:mm a');
+                    let sunset_time = moment.utc(sunset,'X').add(timezone,'seconds').format('hh:mm a');
+                    let max =  Math.floor(data.main.temp_max - kelvin) + "°C";
+                    let min = Math.floor(data.main.temp_min - kelvin) + "°C";
+                    let speed = data.wind[0];
+
+                    console.log(data);
+                    console.log(data.pop);
+
+                    temperature.textContent = Math.floor(data.main.temp - kelvin) + "°C";
+                    fl.textContent = "Feels Like " + Math.floor(data.main.feels_like - kelvin) + "°C";
+                    summary.textContent = data.weather[0].description;
+                    loc.textContent = data.name + "," + data.sys.country;
+                    $(".sunrise").text("Sunrise: "+sunrise_time);
+                    $(".sunset").text("Sunset: "+sunset_time);
+                    $(".humid").text("Humitity: "+humid+"%");
+                    $(".max").text("Max: "+max);
+                    $(".min").text("Min: "+min);
+                    $('#wicon').attr('src', iconurl);
+
+                });
+            });
+        }
+        });
+    </script>
+</body>
+</html>

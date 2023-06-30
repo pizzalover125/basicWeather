@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Kalam:wght@300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Caprasimo', cursive;
+        }
+        body {
+            background-color: black;
+        }
+        div {
+            background-color: lightblue;
+            margin-bottom: 2px;
+            position: relative;
+            border-radius: 5px;
+        }
+        img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+	<script> 
+    let lon;
+    let lat;
+    
+    window.addEventListener("load", () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                lon = position.coords.longitude;
+                lat = position.coords.latitude;
+
+                let url1 = `https://api.weather.gov/points/${lat},${lon}`
+                let url2;
+
+                $.getJSON(url1, function(results) {
+                    url2 = results.properties.forecast;
+                    $.getJSON(url2, function(data) {
+                        console.log(data);
+                        let forecast = data.properties.periods;
+                        console.log(forecast);
+                        forecast.forEach(element => {
+                            const id = "container"+element.number.toString();
+
+                            const container = document.createElement("div");
+                            container.id = "container"+element.number
+                            document.body.appendChild(container);
+
+                            const title = document.createElement("h1");
+                            title.innerText = element.name;
+                            document.getElementById(id).appendChild(title);
+
+                            const temp = document.createElement("h2");
+                            temp.innerText = element.temperature+" °F";
+                            document.getElementById(id).appendChild(temp);
+
+                            const desc = document.createElement("p");
+                            desc.innerText = element.detailedForecast;
+                            document.getElementById(id).appendChild(desc);
+                            
+                            const icon = document.createElement("img");
+                            icon.src = element.icon;
+                            document.getElementById(id).appendChild(icon);
+                        });
+                    })
+                })
+            });
+        }
+    });
+    </script>
+</body>
+</html>

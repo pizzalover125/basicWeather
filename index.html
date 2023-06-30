@@ -97,14 +97,10 @@
             display: inline-block;
             vertical-align: middle;
         }
-        
-        h1 {
-          font-size: 4vh;
-        }
     </style>
 </head>
 <body>
-  <span id="pagetitle">V2.2</span>
+  <span id="pagetitle">V2.3</span>
   <div class="toggle-switch">
       <input type="checkbox" id="toggle" />
       <label class="toggle-switch-slider round" for="toggle"></label>
@@ -121,7 +117,7 @@
       }
 
       function displayTemperature(element, temperature) {
-        const temp = document.createElement("h2");
+        const temp = document.createElement("h3");
         temp.innerText = temperature + (isCelsius ? " °C" : " °F");
         document.getElementById(element).appendChild(temp);
       }
@@ -159,7 +155,7 @@
                 container.id = "container" + element.number
                 document.body.appendChild(container);
 
-                const title = document.createElement("h1");
+                const title = document.createElement("h2");
                 title.innerText = element.name;
                 document.getElementById(id).appendChild(title);
 

@@ -141,7 +141,7 @@
           jsonpCallback: "callback",
           dataType: "jsonp",
           success: function( location ) {
-            $('#location').text(`{location.city}, {location.state}, {location.country_name}`);
+            $('#location').text(`| ${location.city}, ${location.state}, ${location.country_name}`);
           }
         });
       if (navigator.geolocation) {

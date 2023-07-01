@@ -101,12 +101,14 @@
     </style>
 </head>
 <body>
-  <span id="pagetitle">V2.3</span>
+  <span id="pagetitle">V2.4 | </span>
+  <span>Convert to F/C</span>
   <div class="toggle-switch">
       <input type="checkbox" id="toggle" />
       <label class="toggle-switch-slider round" for="toggle"></label>
   </div>
-  <span>Convert to F/C</span> 
+  <span id="location"></span>
+   
 	<script> 
     window.addEventListener("load", () => {
       let lon;
@@ -134,7 +136,14 @@
       }
 
       document.getElementById("toggle").addEventListener("change", toggleTemperatureUnit);
-
+      $.ajax({
+          url: "https://geolocation-db.com/jsonp",
+          jsonpCallback: "callback",
+          dataType: "jsonp",
+          success: function( location ) {
+            $('#location').text(`{location.city}, {location.state}, {location.country_name}`);
+          }
+        });
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           lon = position.coords.longitude;

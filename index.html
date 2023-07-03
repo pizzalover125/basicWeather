@@ -7,7 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Kalam:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
         }
 
         div {
-            background-color: orange;
+            background-color: lightblue;
             margin-bottom: 2px;
             position: relative;
             border-radius: 5px;
@@ -101,7 +101,7 @@
     </style>
 </head>
 <body>
-  <span id="pagetitle">V2.4 | </span>
+  <span id="pagetitle">V2.5 | </span>
   <span>Convert to F/C</span>
   <div class="toggle-switch">
       <input type="checkbox" id="toggle" />
@@ -141,7 +141,7 @@
           jsonpCallback: "callback",
           dataType: "jsonp",
           success: function( location ) {
-            $('#location').text(`| ${location.city}, ${location.state}, ${location.country_name}`);
+            $('#location').text(`| Showing results for ${location.city}, ${location.state}`);
           }
         });
       if (navigator.geolocation) {

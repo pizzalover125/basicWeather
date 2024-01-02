@@ -136,14 +136,7 @@
       }
 
       document.getElementById("toggle").addEventListener("change", toggleTemperatureUnit);
-      $.ajax({
-          url: "https://geolocation-db.com/jsonp",
-          jsonpCallback: "callback",
-          dataType: "jsonp",
-          success: function( location ) {
-            $('#location').text(`| Showing results for ${location.city}, ${location.state}`);
-          }
-        });
+      
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           lon = position.coords.longitude;
